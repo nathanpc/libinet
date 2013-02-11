@@ -1,5 +1,5 @@
 /**
- *  sockets.cpp
+ *  sockets.h
  *  Raw internet sockets.
  *
  *  Nathan Campos <nathanpc@dreamintech.net>
@@ -19,10 +19,19 @@ class Socket {
 		pthread_t thread;
 		HandlerCallback handler_callback;
 
+		std::string server;
+		unsigned int port;
+
 		static void *handle_recv_thread_helper(void *context);
 
 	public:
-		Socket(std::string server, unsigned int port, HandlerCallback _handler_callback);
+		// Constructors
+		Socket();
+		Socket(std::string _server, unsigned int _port, HandlerCallback _handler_callback);
+
+		// Connectors?
+		void connect();
+		void connect(std::string server, unsigned int port, HandlerCallback _handler_callback);
 
 		void *receive();
 		int send_data(std::string data);

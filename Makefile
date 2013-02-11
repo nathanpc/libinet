@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -Wall -pthread
+CXXFLAGS = -Wall #-pthread
 OBJ = src/sockets.o examples/example-socket.o
 #OBJ = src/http.o examples/example-http.o
 

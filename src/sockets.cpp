@@ -23,16 +23,46 @@
 using namespace std;
 
 /**
- * Constructs the Socket object and connect to the server
+ * Constructs an incomplete Socket object.
+ */
+Socket::Socket() {
+	connected = false;
+}
+
+/**
+ * Constructs the Socket object.
  *
- * \param server The server location.
- * \param port The server port.
+ * \param _server Server location.
+ * \param _port Server port.
  * \param _handler_callback Callback to parse the received information.
  */
-Socket::Socket(string server, unsigned int port, HandlerCallback _handler_callback) {
-	connected = false;
+Socket::Socket(string _server, unsigned int _port, HandlerCallback _handler_callback) {
+	server = _server;
+	port = _port;
 	handler_callback = _handler_callback;
 
+	connected = false;
+}
+
+/**
+ * Connects to the server.
+ *
+ * \param _server Server location.
+ * \param _port Server port.
+ * \param _handler_callback Callback to parse the received information.
+ */
+void Socket::connect(string _server, unsigned int _port, HandlerCallback _handler_callback) {
+	server = _server;
+	port = _port;
+	handler_callback = _handler_callback;
+
+	connect();
+}
+
+/**
+ * Connects to the server.
+ */
+void Socket::connect() {
 	struct addrinfo hints, *servinfo;
 	int res;
 
@@ -58,7 +88,7 @@ Socket::Socket(string server, unsigned int port, HandlerCallback _handler_callba
 	}
 
 	// Connect.
-	if (connect(socket_descriptor, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
+	if (::connect(socket_descriptor, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
 		close(socket_descriptor);
 
 		cerr << "Couldn't connect to host." << endl;
@@ -102,7 +132,12 @@ int Socket::send_data(string data) {
 	int bytes_sent = send(socket_descriptor, buffer, len, 0);
 
 	if (bytes_sent == -1) {
-		cerr << "An error occurred while trying to send the data" << endl;
+		if (!connected) {
+			cerr << "You need to be connected to send data." << endl;
+		} else {
+			cerr << "An error occurred while trying to send the data" << endl;
+		}
+
 		exit(EXIT_FAILURE);
 	}
 

@@ -20,6 +20,7 @@ bool socket_data_callback(string data) {
 int main(int argc, char *argv[]) {
 	// Setup the socket and connect.
 	Socket socket("localhost", 80, &socket_data_callback);
+	socket.connect();
 
 	// Send some information.
 	socket.send_data("GET / HTTP/1.1\r\n");
