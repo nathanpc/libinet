@@ -24,7 +24,7 @@ class Socket {
 	public:
 		Socket(std::string server, unsigned int port, HandlerCallback _handler_callback);
 
-		void *handle_recv();
+		void *receive();
 		int send_data(std::string data);
 		void close_connection();
 };

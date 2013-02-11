@@ -107,7 +107,7 @@ int Socket::send_data(string data) {
 	}
 
 	#ifdef DEBUG
-		cout << "Sent " << bytes_sent << "bytes: \"" << data << "\"" << endl;
+		cout << "Sent " << bytes_sent << " bytes: \"" << data << "\"" << endl;
 	#endif
 
 	return bytes_sent;
@@ -117,13 +117,13 @@ int Socket::send_data(string data) {
  * Just a little hack to make pthread work with a C++ class.
  */
 void *Socket::handle_recv_thread_helper(void *context) {
-	return ((Socket *)context)->handle_recv();
+	return ((Socket *)context)->receive();
 }
 
 /**
  * Handles the information that was received from the server.
  */
-void *Socket::handle_recv() {
+void *Socket::receive() {
 	// recv some data.
 	int numbytes;
 	char buffer[MAXDATASIZE];
