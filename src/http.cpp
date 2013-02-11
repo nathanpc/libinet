@@ -84,8 +84,12 @@ HTTP_Response HTTP::request(string type, string location) {
 
 	// Populate the HTTP_Response object.
 	response.raw = HTTP::raw_response;
-	// TODO: Get the status stuff.
+	response.status_code = atoi(HTTP::raw_response.substr(HTTP::raw_response.find(" ") + 1, 3).c_str());
 	response.headers = parse_headers();
+	response.body = HTTP::raw_response.substr(HTTP::raw_response.find("\r\n\r\n") + 4);
+
+	response.status_message = HTTP::raw_response.substr(HTTP::raw_response.find(" ") + 5);
+	response.status_message = response.status_message.substr(0, response.status_message.find("\r\n"));
 
 	return response;
 }
@@ -107,7 +111,8 @@ bool HTTP::socket_data_callback(string data) {
  * \return Vector of string vectors (name, value).
  */
 vector<vector<string> > HTTP::parse_headers() {
-	string str_headers = HTTP::raw_response.substr(HTTP::raw_response.find("\r\n") + 2, HTTP::raw_response.find("\r\n\r\n"));
+	string str_headers = HTTP::raw_response.substr(HTTP::raw_response.find("\r\n") + 2);
+	str_headers = str_headers.substr(0, HTTP::raw_response.find("\r\n\r\n"));
 	vector<vector<string> > response_headers;
 
 	while (str_headers.find("\r\n") != string::npos) {

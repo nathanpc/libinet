@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 	//cout << response.raw << endl;
 
 	// Print the response status (hope it's 200 OK).
-	cout << "Status: " << response.status_code << " " << response.status_message << endl;
+	cout << response.status_code << " " << response.status_message << endl;
 
 	// Print the headers.
 	for (size_t i = 0; i < response.headers.size(); i++) {
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Print body.
-	//cout << response.body << endl;
+	cout << endl << response.body << endl;
 
 	return 0;
 }
