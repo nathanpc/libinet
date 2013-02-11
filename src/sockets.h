@@ -11,11 +11,15 @@
 #include <string>
 
 class Socket {
-    private:
-    	int socket_descriptor;
+	private:
+		int socket_descriptor;
+		bool connected;
 
-    public:
-        Socket(std::string server, std::string port);
+	public:
+		Socket(std::string server, std::string port);
+
+		int send_data(std::string data);
+		void close_connection();
 };
 
 #endif
