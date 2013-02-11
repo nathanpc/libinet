@@ -16,6 +16,9 @@
 class HTTP_Response {
 	public:
 		std::string raw;
+		unsigned int status_code;
+		std::string status_message;
+
 		std::vector<std::vector<std::string> > headers;
 		std::string body;
 
@@ -38,7 +41,9 @@ class HTTP {
 		HTTP(std::string _server, unsigned int _port);
 
 		void add_header(std::string name, std::string value);
-		HTTP_Response request(std::string location);
+		std::vector<std::vector<std::string> > parse_headers();
+
+		HTTP_Response request(std::string type, std::string location);
 };
 
 #endif

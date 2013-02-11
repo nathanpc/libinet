@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "../src/http.h"
 using namespace std;
@@ -17,8 +18,22 @@ int main(int argc, char *argv[]) {
 	HTTP_Response response;
 
 	http.add_header("User-Agent", "libinet++/0.1");
-	response = http.request("/~Nathan/test_req.php");
-	cout << response.raw << endl;
+	response = http.request("POST", "/~Nathan/test_req.php");
+
+	// Print the raw response.
+	//cout << response.raw << endl;
+
+	// Print the response status (hope it's 200 OK).
+	cout << "Status: " << response.status_code << " " << response.status_message << endl;
+
+	// Print the headers.
+	for (size_t i = 0; i < response.headers.size(); i++) {
+		vector<string> header = response.headers.at(i);
+		cout << header.at(0) << ": " << header.at(1) << endl;
+	}
+
+	// Print body.
+	//cout << response.body << endl;
 
 	return 0;
 }
