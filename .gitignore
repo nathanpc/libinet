@@ -1,3 +1,7 @@
+# Ignore
 .DS_Store
 *.o
 example-*
+
+# Exceptions
+!examples/example-*

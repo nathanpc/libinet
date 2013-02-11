@@ -16,4 +16,5 @@ debug: example-socket
 
 clean:
 	rm -rf src/*.o
+	rm -rf examples/*.o
 	rm -rf example-*
