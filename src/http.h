@@ -43,7 +43,7 @@ class HTTP {
 		void add_header(std::string name, std::string value);
 		std::vector<std::vector<std::string> > parse_headers();
 
-		HTTP_Response request(std::string type, std::string location);
+		HTTP_Response request(std::string type, std::string location, std::string body = "");
 };
 
 #endif

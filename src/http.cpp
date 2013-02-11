@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "http.h"
 #include "sockets.h"
@@ -63,7 +64,7 @@ void HTTP::add_header(string name, string value) {
  * \param location The location of something in a server.
  * \return HTTP_Response instance.
  */
-HTTP_Response HTTP::request(string type, string location) {
+HTTP_Response HTTP::request(string type, string location, string body) {
 	HTTP_Response response;
 
 	// Setup the socket and connect.
@@ -78,8 +79,18 @@ HTTP_Response HTTP::request(string type, string location) {
 		socket.send_data(headers.at(i).at(0) + ": " + headers.at(i).at(1) + "\r\n");
 	}
 
-	socket.send_data("\r\n");
-	// TODO: Implement POST body.
+	
+	if (body.empty()) {
+		socket.send_data("\r\n");
+	} else {
+		stringstream stream;
+		stream << "Content-Length: " << body.length() << "\r\n\r\n";
+
+		socket.send_data(stream.str());
+		socket.send_data(body);
+		socket.send_data("\r\n\r\n");
+	}
+
 	socket.receive();
 
 	// Populate the HTTP_Response object.
