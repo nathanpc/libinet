@@ -13,11 +13,21 @@
 #include "sockets.h"
 using namespace std;
 
+string HTTP::raw_response = "";
+
+/**
+ * HTTP_Response class constructor.
+ */
+HTTP_Response::HTTP_Response() {
+	string raw = "";
+	string body = "";
+}
+
 /**
  * HTTP class constructor.
  */
 HTTP::HTTP() {
-	raw_response = "";
+	HTTP::raw_response = "";
 }
 
 /**
@@ -30,7 +40,7 @@ HTTP::HTTP(string _server, unsigned int _port) {
 	server = _server;
 	port = _port;
 
-	raw_response = "";
+	HTTP::raw_response = "";
 }
 
 /**
@@ -62,14 +72,14 @@ HTTP_Response HTTP::request(string location) {
 	socket.send_data("Host: " + server + "\r\n");
 
 	for (size_t i = 0; i < headers.size(); i++) {
-		socket.send_data(headers.at(i)[0] + ": " + headers.at(i)[1] + "\r\n");
+		socket.send_data(headers.at(i).at(0) + ": " + headers.at(i).at(1) + "\r\n");
 	}
 
 	socket.send_data("\r\n");
 	socket.receive();
 
 	// Populate the HTTP_Response object.
-	response.raw = raw_response;
+	response.raw = HTTP::raw_response;
 
 	return response;
 }

@@ -1,15 +1,18 @@
 CXX = clang++
 CXXFLAGS = -Wall #-pthread
-OBJ = src/sockets.o examples/example-socket.o
-#OBJ = src/http.o examples/example-http.o
+SOCKET_OBJ = src/sockets.o examples/example-socket.o
+HTTP_OBJ = src/sockets.o src/http.o examples/example-http.o
 
-all: example-socket
+all: example-socket example-http
 
-example-socket: $(OBJ)
+example-socket: $(SOCKET_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+example-http: $(HTTP_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 debug: CXXFLAGS += -g3 -DDEBUG
-debug: example-socket
+debug: all
 
 %.o: %.c
 	$(CXX) $(CXXFLAGS) $<

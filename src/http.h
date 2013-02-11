@@ -16,7 +16,7 @@
 class HTTP_Response {
 	public:
 		std::string raw;
-		std::vector<std::string[2]> headers;
+		std::vector<std::vector<std::string> > headers;
 		std::string body;
 
 		HTTP_Response();
@@ -32,7 +32,7 @@ class HTTP {
 	public:
 		std::string server;
 		unsigned int port;
-		std::vector<std::string[2]> headers;
+		std::vector<std::vector<std::string> > headers;
 
 		HTTP();
 		HTTP(std::string _server, unsigned int _port);
