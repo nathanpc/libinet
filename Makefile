@@ -1,18 +1,18 @@
 CXX = clang++
 CXXFLAGS = -Wall -pthread
-OBJ = src/http.o
+OBJ = src/sockets.o src/http.o src/test-http.o
 
-all: http
+all: test-http
 
-http: $(OBJ)
+test-http: $(OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 debug: CXXFLAGS += -g3 -DDEBUG
-debug: http
+debug: test-http
 
 %.o: %.c
 	$(CXX) $(CXXFLAGS) $<
 
 clean:
 	rm -rf src/*.o
-	rm -rf http
+	rm -rf test-http

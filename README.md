@@ -1,3 +1,3 @@
-# libhttpp
+# libinet++
 
-HTTP library for C++
+A networking library for C++
