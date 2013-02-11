@@ -15,6 +15,11 @@ This library was built using one of the worst library ever invented in the face 
 This library comes with an implementation of Sockets (`sockets.h`) and a HTTP client (`http.h`), which means you can extend it to suit your needs (remember to submit a Pull Request).
 
 
+## Documentation
+
+You can find the documentation for this awesome library at [docs/](http://nathanpc.github.com/libinet/docs/).
+
+
 ## Some examples
 
 You can check out the examples in the `examples/` directory, but I've pasted them here for your convenience.
