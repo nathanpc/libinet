@@ -84,6 +84,7 @@ HTTP_Response HTTP::request(string type, string location) {
 
 	// Populate the HTTP_Response object.
 	response.raw = HTTP::raw_response;
+	// TODO: Get the status stuff.
 	response.headers = parse_headers();
 
 	return response;
@@ -106,16 +107,16 @@ bool HTTP::socket_data_callback(string data) {
  * \return Vector of string vectors (name, value).
  */
 vector<vector<string> > HTTP::parse_headers() {
-	string str_headers = HTTP::raw_response.substr(0, HTTP::raw_response.find("\r\n\r\n") - 1);
+	string str_headers = HTTP::raw_response.substr(HTTP::raw_response.find("\r\n") + 2, HTTP::raw_response.find("\r\n\r\n"));
 	vector<vector<string> > response_headers;
 
 	while (str_headers.find("\r\n") != string::npos) {
-		string curr_header = str_headers.substr(0, str_headers.find("\r\n") - 1);
+		string curr_header = str_headers.substr(0, str_headers.find("\r\n"));
 
 		// Just making sure...
-		if (curr_header != "\r\n") {
+		if (curr_header != "\r\n" && curr_header.find(": ") != string::npos) {
 			string name = curr_header.substr(0, curr_header.find(": "));
-			string value = curr_header.substr(curr_header.find(": "), curr_header.find("\r\n"));
+			string value = curr_header.substr(curr_header.find(": ") + 2);
 
 			vector<string> header;
 			header.push_back(name);
@@ -125,7 +126,7 @@ vector<vector<string> > HTTP::parse_headers() {
 		}
 
 		// Remove the used header.
-		str_headers.substr(str_headers.find("\r\n"));
+		str_headers = str_headers.substr(str_headers.find("\r\n") + 2);
 	}
 
 	return response_headers;
