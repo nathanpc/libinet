@@ -10,13 +10,20 @@
 
 #include <string>
 
+typedef bool (*HandlerCallback)(std::string);
+
 class Socket {
 	private:
 		int socket_descriptor;
 		bool connected;
+		pthread_t thread;
+		HandlerCallback handler_callback;
+
+		void *handle_recv();
+		static void *handle_recv_thread_helper(void *context);
 
 	public:
-		Socket(std::string server, std::string port);
+		Socket(std::string server, std::string port, HandlerCallback _handler_callback);
 
 		int send_data(std::string data);
 		void close_connection();

@@ -1,6 +1,7 @@
 CXX = clang++
 CXXFLAGS = -Wall -pthread
-OBJ = src/sockets.o src/http.o src/test-http.o
+OBJ = src/sockets.o examples/example-socket.o
+#OBJ = src/http.o examples/example-http.o
 
 all: test-http
 
