@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	HTTP_Response response;
 
 	http.add_header("User-Agent", "libinet++/0.1");
-	response = http.request("POST", "/~Nathan/test_req.php", "Testing the POST body stuff.");
+	response = http.request("POST", "/test.php", "Testing the POST body stuff.");
 
 	// Print the raw response.
 	//cout << response.raw << endl;
