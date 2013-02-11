@@ -55,6 +55,20 @@ bool HTTP::socket_data_callback(string data) {
 }
 
 /**
+ * Adds a header to the header list.
+ *
+ * \param name Header name.
+ * \param value Header value.
+ */
+void HTTP::add_header(string name, string value) {
+	vector<string> header;
+	header.push_back(name);
+	header.push_back(value);
+
+	headers.push_back(header);
+}
+
+/**
  * Request something from a server.
  *
  * \param location The location of something in a server.

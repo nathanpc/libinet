@@ -16,7 +16,8 @@ int main(int argc, char *argv[]) {
 	HTTP http("localhost", 80);
 	HTTP_Response response;
 
-	response = http.request("/");
+	http.add_header("User-Agent", "libinet++/0.1");
+	response = http.request("/~Nathan/test_req.php");
 	cout << response.raw << endl;
 
 	return 0;

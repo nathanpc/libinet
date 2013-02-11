@@ -37,6 +37,7 @@ class HTTP {
 		HTTP();
 		HTTP(std::string _server, unsigned int _port);
 
+		void add_header(std::string name, std::string value);
 		HTTP_Response request(std::string location);
 };
 
