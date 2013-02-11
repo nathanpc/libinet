@@ -3,17 +3,17 @@ CXXFLAGS = -Wall -pthread
 OBJ = src/sockets.o examples/example-socket.o
 #OBJ = src/http.o examples/example-http.o
 
-all: test-http
+all: example-socket
 
-test-http: $(OBJ)
+example-socket: $(OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 debug: CXXFLAGS += -g3 -DDEBUG
-debug: test-http
+debug: example-socket
 
 %.o: %.c
 	$(CXX) $(CXXFLAGS) $<
 
 clean:
 	rm -rf src/*.o
-	rm -rf test-http
+	rm -rf example-*

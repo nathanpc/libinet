@@ -19,12 +19,12 @@ class Socket {
 		pthread_t thread;
 		HandlerCallback handler_callback;
 
-		void *handle_recv();
 		static void *handle_recv_thread_helper(void *context);
 
 	public:
-		Socket(std::string server, std::string port, HandlerCallback _handler_callback);
+		Socket(std::string server, unsigned int port, HandlerCallback _handler_callback);
 
+		void *handle_recv();
 		int send_data(std::string data);
 		void close_connection();
 };
