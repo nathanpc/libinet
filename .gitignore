@@ -4,4 +4,5 @@
 example-*
 
 # Exceptions
-!examples/example-*
+!examples/example-*.cpp
+!examples/example-*.h
