@@ -17,6 +17,9 @@ using namespace std;
 string HTTP::raw_response = "";
 size_t HTTP::content_length = 0;
 
+ProgressCallback HTTP::progress_callback;
+bool HTTP::progress_callback_set = false;
+
 /**
  * HTTP_Response class constructor.
  */
@@ -31,6 +34,7 @@ HTTP_Response::HTTP_Response() {
 HTTP::HTTP() {
 	HTTP::raw_response = "";
 	HTTP::content_length = 0;
+	progress_callback_set = false;
 }
 
 /**
@@ -45,6 +49,7 @@ HTTP::HTTP(string _server, unsigned int _port) {
 
 	HTTP::raw_response = "";
 	HTTP::content_length = 0;
+	progress_callback_set = false;
 }
 
 /**
@@ -109,6 +114,16 @@ HTTP_Response HTTP::request(string type, string location, string body) {
 }
 
 /**
+ * Set the progress callback, like callback(size_t max_length, size_t received_length)
+ *
+ * \param callback The callback.
+ */
+void HTTP::set_progress_callback(ProgressCallback callback) {
+	HTTP::progress_callback = callback;
+	HTTP::progress_callback_set = true;
+}
+
+/**
  * Socket callback handler.
  *
  * \param data Data from a socket connection.
@@ -117,17 +132,31 @@ HTTP_Response HTTP::request(string type, string location, string body) {
 bool HTTP::socket_data_callback(string data) {
 	raw_response += data;
 
-	if (raw_response.find("\r\n\r\n") != string::npos && content_length == 0) {
+	if (raw_response.find("\r\n\r\n") != string::npos) {
 		// All the headers arrived.
-		size_t cnthead_pos = raw_response.find("Content-Length: ");
-		if (cnthead_pos != string::npos) {
-			// Content-Length received.
-			cnthead_pos = cnthead_pos + strlen("Content-Length: ");
+		if (content_length == 0) {
+			// Need to get the Content-Length.
+			size_t cnthead_pos = raw_response.find("Content-Length: ");
 
-			string str_content_length = raw_response.substr(cnthead_pos);
-			str_content_length = str_content_length.substr(0, str_content_length.find("\r\n"));
+			if (cnthead_pos != string::npos) {
+				// Content-Length received.
+				cnthead_pos = cnthead_pos + strlen("Content-Length: ");
 
-			content_length = atoi(str_content_length.c_str());
+				string str_content_length = raw_response.substr(cnthead_pos);
+				str_content_length = str_content_length.substr(0, str_content_length.find("\r\n"));
+
+				content_length = atoi(str_content_length.c_str());
+				if (progress_callback_set) {
+					string body = raw_response.substr(raw_response.find("\r\n\r\n") + 4);
+					progress_callback(content_length, body.length());
+				}
+			}
+		} else {
+			// Getting the body stuff.
+			if (progress_callback_set) {
+				string body = raw_response.substr(raw_response.find("\r\n\r\n") + 4);
+				progress_callback(content_length, body.length());
+			}
 		}
 	}
 

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "sockets.h"
+typedef void (*ProgressCallback)(size_t, size_t);
 
 class HTTP_Response {
 	public:
@@ -31,6 +32,11 @@ class HTTP {
 
 		static std::string raw_response;
 		static size_t content_length;
+		static size_t received_body_length;
+
+		static ProgressCallback progress_callback;
+		static bool progress_callback_set;
+
 		static bool socket_data_callback(std::string data);
 
 	public:
@@ -43,6 +49,8 @@ class HTTP {
 
 		void add_header(std::string name, std::string value);
 		std::vector<std::vector<std::string> > parse_headers();
+
+		void set_progress_callback(ProgressCallback callback);
 
 		HTTP_Response request(std::string type, std::string location, std::string body = "");
 };

@@ -12,13 +12,19 @@
 #include "../src/http.h"
 using namespace std;
 
+void progress(size_t length, size_t received_length) {
+	cout << (received_length * 100) / length << "%" << endl;
+}
+
 int main(int argc, char *argv[]) {
 	// Setup the connection.
 	HTTP http("localhost", 80);
 	HTTP_Response response;
 
 	http.add_header("User-Agent", "libinet++/0.1");
-	response = http.request("POST", "/test.php", "Testing the POST body stuff.");
+	http.set_progress_callback(&progress);  // Optional
+
+	response = http.request("POST", "/test.php", "Test POST body");
 
 	// Print the raw response.
 	//cout << response.raw << endl;
