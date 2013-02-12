@@ -30,6 +30,7 @@ class HTTP {
 		Socket socket;
 
 		static std::string raw_response;
+		static size_t content_length;
 		static bool socket_data_callback(std::string data);
 
 	public:

@@ -15,6 +15,7 @@
 using namespace std;
 
 string HTTP::raw_response = "";
+size_t HTTP::content_length = 0;
 
 /**
  * HTTP_Response class constructor.
@@ -29,6 +30,7 @@ HTTP_Response::HTTP_Response() {
  */
 HTTP::HTTP() {
 	HTTP::raw_response = "";
+	HTTP::content_length = 0;
 }
 
 /**
@@ -42,6 +44,7 @@ HTTP::HTTP(string _server, unsigned int _port) {
 	port = _port;
 
 	HTTP::raw_response = "";
+	HTTP::content_length = 0;
 }
 
 /**
@@ -113,6 +116,21 @@ HTTP_Response HTTP::request(string type, string location, string body) {
  */
 bool HTTP::socket_data_callback(string data) {
 	raw_response += data;
+
+	if (raw_response.find("\r\n\r\n") != string::npos && content_length == 0) {
+		// All the headers arrived.
+		size_t cnthead_pos = raw_response.find("Content-Length: ");
+		if (cnthead_pos != string::npos) {
+			// Content-Length received.
+			cnthead_pos = cnthead_pos + strlen("Content-Length: ");
+
+			string str_content_length = raw_response.substr(cnthead_pos);
+			str_content_length = str_content_length.substr(0, str_content_length.find("\r\n"));
+
+			content_length = atoi(str_content_length.c_str());
+		}
+	}
+
 	return true;
 }
 
