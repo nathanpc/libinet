@@ -91,4 +91,4 @@ int main(int argc, char *argv[]) {
 
 ## Contribute!
 
-You think this library suck? You can fix it by submitting a Pull Request or a Issue!
+You think this library sucks? You can fix it by submitting a Pull Request or a Issue!
