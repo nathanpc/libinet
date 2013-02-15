@@ -9,6 +9,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/types.h>

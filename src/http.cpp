@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <cstdlib>
+#include <cstring>
 
 #include "http.h"
 #include "sockets.h"
