@@ -99,7 +99,7 @@ void URI::parse_param(string str_param) {
 
 string URI::get_full_location() {
 	stringstream full_location;
-	full_location << location;
+	full_location << "/" << location;
 
 	for (size_t i = 0; i < params.size(); i++) {
 		if (i == 0) {

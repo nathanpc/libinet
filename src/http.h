@@ -12,6 +12,8 @@
 #include <vector>
 
 #include "sockets.h"
+#include "uri.h"
+
 typedef void (*ProgressCallback)(size_t, size_t);
 
 class HTTP_Response {
@@ -42,17 +44,19 @@ class HTTP {
 	public:
 		std::string server;
 		unsigned int port;
+		std::string location;
 		std::vector<std::vector<std::string> > headers;
 
 		HTTP();
-		HTTP(std::string _server, unsigned int _port);
+		HTTP(std::string _server, unsigned int _port, std::string _location);
+		HTTP(URI uri);
 
 		void add_header(std::string name, std::string value);
 		std::vector<std::vector<std::string> > parse_headers();
 
 		void set_progress_callback(ProgressCallback callback);
 
-		HTTP_Response request(std::string type, std::string location, std::string body = "");
+		HTTP_Response request(std::string type, std::string body = "");
 };
 
 #endif

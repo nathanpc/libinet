@@ -44,10 +44,27 @@ HTTP::HTTP() {
  *
  * \param _server Server URI.
  * \param _port Server port.
+ * \param _location URL location.
  */
-HTTP::HTTP(string _server, unsigned int _port) {
+HTTP::HTTP(string _server, unsigned int _port, string _location) {
 	server = _server;
 	port = _port;
+	location = _location;
+
+	HTTP::raw_response = "";
+	HTTP::content_length = 0;
+	progress_callback_set = false;
+}
+
+/**
+ * HTTP class constructor.
+ *
+ * \param _server Server URI.
+ */
+HTTP::HTTP(URI uri) {
+	server = uri.server;
+	port = uri.port;
+	location = uri.get_full_location();
 
 	HTTP::raw_response = "";
 	HTTP::content_length = 0;
@@ -71,10 +88,11 @@ void HTTP::add_header(string name, string value) {
 /**
  * Request something from a server.
  *
- * \param location The location of something in a server.
+ * \param type Request type.
+ * \param body POST body.
  * \return HTTP_Response instance.
  */
-HTTP_Response HTTP::request(string type, string location, string body) {
+HTTP_Response HTTP::request(string type, string body) {
 	HTTP_Response response;
 
 	// Setup the socket and connect.

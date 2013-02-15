@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "../src/http.h"
+#include "../src/uri.h"
 using namespace std;
 
 void progress(size_t length, size_t received_length) {
@@ -17,14 +18,17 @@ void progress(size_t length, size_t received_length) {
 }
 
 int main(int argc, char *argv[]) {
+	// Setup URI.
+	URI uri("http://localhost/test.php?som=te");
+
 	// Setup the connection.
-	HTTP http("localhost", 80);
+	HTTP http(uri);
 	HTTP_Response response;
 
 	http.add_header("User-Agent", "libinet++/0.1");
 	http.set_progress_callback(&progress);  // Optional
 
-	response = http.request("POST", "/test.php", "Test POST body");
+	response = http.request("POST", "Test POST body");
 
 	// Print the raw response.
 	//cout << response.raw << endl;
