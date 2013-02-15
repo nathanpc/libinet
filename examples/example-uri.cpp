@@ -18,11 +18,15 @@ int main(int argc, char *argv[]) {
 	// Print the protocol.
 	cout << "Protocol: " << uri.protocol << endl;
 
-	// Print the server and its port.
-	cout << "Server: " << uri.server << endl << "Port: " << uri.port << endl;
+	// Print the server.
+	cout << "Server: " << uri.server << endl;
+
+	// Print port.
+	cout << "Port: " << uri.port << endl;
 
 	// Print the location.
 	cout << "Location: " << uri.location << endl;
+	cout << "Full Location: " << uri.get_full_location() << endl;
 
 	// Print all the params.
 	for (size_t i = 0; i < uri.params.size(); i++) {

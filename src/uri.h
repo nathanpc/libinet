@@ -35,6 +35,7 @@ class URI {
 		URI(std::string _uri);
 
 		void parse(std::string _uri);
+		std::string get_full_location();
 };
 
 #endif

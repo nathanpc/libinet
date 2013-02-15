@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <cstdlib>
 
 #include "uri.h"
@@ -94,4 +95,24 @@ void URI::parse_param(string str_param) {
 	param.push_back(str_param.substr(0, str_param.find("=")));
 	param.push_back(str_param.substr(str_param.find("=") + 1));
 	params.push_back(param);
+}
+
+string URI::get_full_location() {
+	stringstream full_location;
+	full_location << location;
+
+	for (size_t i = 0; i < params.size(); i++) {
+		if (i == 0) {
+			full_location << "?";
+		}
+
+		full_location << params[i][0] << "=" << params[i][1] << "&";
+	}
+
+	if (params.size() > 0) {
+		string str_full = full_location.str();
+		return str_full.substr(0, str_full.length() - 1);
+	}
+
+	return full_location.str();
 }
